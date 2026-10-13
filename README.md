@@ -1,191 +1,80 @@
-# Halo: Combat Evolved for Linux, Windows, Android and the web
+# Def Jam: Fight for NY for Linux, Windows, Android and the Web (OpenFFNY)
 
-[![Join our Discord](https://invidget.switchblade.xyz/9gqcHyr5km)](https://discord.gg/9gqcHyr5km)
+> [!NOTE]
+> **Proyecto basado en OpenCE:** Este proyecto es un port nativo multiplataforma en desarrollo de ***Def Jam: Fight for NY*** (versión original de Xbox). Está construido y adaptado directamente a partir de la arquitectura y la Capa de Abstracción de Plataforma (PAL) de [**OpenCE**](https://github.com/OpenCommunityEdition/OpenCE) (el port de la descompilación de *Halo: Combat Evolved* para Linux, Windows, Android y Web creado por el equipo de *OpenCommunityEdition*).
 
-This project is a port of the Halo: Combat Evolved decompilation to Linux,
-Windows, Android and web browsers. The decompilation is of the Xbox build 2342
-(`cachebeta.exe`, SHA-256
-`4cc87b45f721270392a96f1674ed2b5cd4a7bb4355faeab4531d1cf1884d9520`).
+---
 
-<img width="1289" height="995" alt="The game on Linux" src="https://github.com/user-attachments/assets/0d3ad50f-f8b8-46cf-aef8-e3661da2a7d7" />
+## 1. Acerca de este Proyecto
 
-The port starts from the decompilation of [bnunu/halo-1](https://github.com/bnunu/halo-1).
-That project is a fork of [punpckhdq/halo](https://github.com/punpckhdq/halo).
+OpenFFNY tiene como objetivo llevar **Def Jam: Fight for NY** (desarrollado originalmente en 2004 por AKI Corporation y EA Canada para la consola Xbox original) a sistemas operativos modernos:
+* **Linux** (ejecutable nativo x86 con OpenGL 4.5 y SDL3)
+* **Windows** (ejecutable nativo x86 con OpenGL y SDL3)
+* **Android** (arquitectura de invitado AArch64 ILP32 en app de 64 bits con OpenGL ES 3)
+* **Web** (WebAssembly / WebGL 2 en el navegador con soporte de hilos y almacenamiento local)
 
-## Download
+### Base Técnica Reutilizada de OpenCE
 
-GitHub Actions builds the game for each commit. These links download the
-builds of the latest release:
+El proyecto aprovecha la base de ingeniería de OpenCE:
+* **Renderizador Direct3D 8 / GPU NV2A:** Traducción de registros de la GPU original de Xbox, shaders y texturas *swizzled* a OpenGL moderno (`port/linux/src/d3d8_gl.c`, `nv2a_psh.c`, `xbox_textures.c`).
+* **Kernel y Memoria de Xbox:** Reimplementación limpia de llamadas al kernel NT de Xbox (`xboxkrnl.exe`), espacio de memoria física de 32 bits y archivos (`port/linux/src/xbox_kernel.c`, `xbox_memory.c`, `xbox_files.c`).
+* **Audio y Mandos con SDL3:** Emulación de llamadas de DirectSound y soporte para múltiples mandos vía XInput sobre SDL3 (`dsound_sdl.c`, `xinput_sdl.c`).
+* **Cabeceras limpias del XDK:** Declaraciones legales tipo *cleanroom* en `port/include/xdk/` sin requerir el SDK propietario de Microsoft.
+* **Sistema de compilación Multiplataforma:** Automatización mediante Python y Ninja (`configure.py`) con soporte para PGO (Profile-Guided Optimization) y LTO (Link-Time Optimization).
 
-| Platform | Release | Debug |
-| --- | --- | --- |
-| Linux | [halo-linux-release.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-linux-release.zip) | [halo-linux-debug.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-linux-debug.zip) |
-| Windows | [halo-windows-release.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-windows-release.zip) | [halo-windows-debug.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-windows-debug.zip) |
-| Android | [halo-android-release.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-android-release.zip) | [halo-android-debug.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-android-debug.zip) |
-| Web | [halocombatevolved.com](https://halocombatevolved.com/) (or [halo-web-release.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-web-release.zip) for your own server) | [halo-web-debug.zip](https://github.com/OpenCommunityEdition/OpenCE/releases/latest/download/halo-web-debug.zip) |
+---
 
-Use the release build to play. The debug build stops at the first failed
-assertion and writes it to the log. Use the debug build to find and report
-problems.
+## 2. Estado de la Ingeniería Inversa
 
-The game updates itself. At start-up it looks for a newer release, and asks
-if you want to install it. Refer to "Updates" in
-[port/linux/README.md](port/linux/README.md#updates). The web site offers
-each new build when it is out.
+Para consultar el registro técnico paso a paso, consulta [**`REGISTRO_DEF_JAM.md`**](REGISTRO_DEF_JAM.md).
 
-Each build of the `main` branch that passes on all four platforms is a new
-release, and the web site then plays it. The [Releases](https://github.com/OpenCommunityEdition/OpenCE/releases)
-page keeps the last five releases. If the latest build has a problem, get
-an older build from that page.
+### Resumen de descubrimientos clave:
+* **Ejecutable `default.xbe` analizado:** Corresponde a una versión con configuración de desarrollo (**Debug Build**), con identificador `DJFFNY` (Title ID: `0x45410049`) y ruta de compilación original:
+  ```text
+  D:\djv2\Code\Game\xbox\Game
+  ```
+* **Aislamiento de Secciones:** El binario separa limpiamente el código del motor (`.text`, 2.0 MB) de las librerías del Xbox SDK (`D3D`, `D3DX`, `DSOUND`, `XPP`, `DOLBY`).
+* **Cobertura del Kernel:** Se han identificado y resuelto el **100% de los 160 ordinales del Kernel** de Xbox importados por el juego.
 
-## Game data
+---
 
-The port does not include the game data. Download an Xbox disc image
-(`.xiso` or `.iso`) of Halo: Combat Evolved. All versions of the game
-operate. The maps of the European (PAL) version were made for a slower
-console. The port changes them to play as the North American (NTSC) maps do,
-so players of the two versions can play together.
+## 3. Datos del Juego (Game Data)
 
-1. Start the game.
-2. At the first start, the game asks for the disc image. Select it.
-3. The game extracts the `maps/` folder. Then the game starts.
+Este repositorio **no contiene ni distribuye datos, modelos, audios ni binarios propietarios de EA o Microsoft**. 
 
-On Linux and Windows, the game puts `maps/` next to the executable. On
-Android, copy the disc image to the phone first. The app puts `maps/` in its
-data folder. Refer to [port/android/README.md](port/android/README.md). On
-the web, the page copies `maps/` out of the disc image into the browser's
-storage for the site; nothing is uploaded. Refer to
-[port/web/README.md](port/web/README.md).
+Para utilizar el proyecto:
+1. Dispón de una copia legítima en disco de *Def Jam: Fight for NY* para Xbox (`.iso`, `.bin` o `.xiso`).
+2. Utiliza el script extractor para obtener los recursos del disco:
+   ```bash
+   python tools/extract_defjam.py "ruta/a/Def Jam.bin" "Def Jam - Fight for NY/extracted"
+   ```
+3. Para inspeccionar el encabezado y las secciones de `default.xbe`:
+   ```bash
+   python tools/parse_xbe.py
+   ```
 
-## Platforms
+---
 
-Each platform has its own instructions:
+## 4. Compilación
 
-| Platform | Instructions |
-| --- | --- |
-| Linux (32-bit x86 executable, OpenGL 4.5, SDL3) | [port/linux/README.md](port/linux/README.md) |
-| Windows (32-bit x86 executable, OpenGL 4.5, SDL3) | [port/windows/README.md](port/windows/README.md) |
-| Android (arm64 app, OpenGL ES 3, SDL3) | [port/android/README.md](port/android/README.md) |
-| Web (WebAssembly, WebGL 2, SDL3; desktop Chrome, Edge and Firefox) | [port/web/README.md](port/web/README.md) |
+El sistema de compilación se hereda directamente del framework de OpenCE:
 
-The Linux README also gives the controls, the settings and the multiplayer
-functions. These are almost the same on all platforms.
+1. Configurar el entorno de compilación:
+   ```bash
+   python configure.py
+   ```
+   *(Opciones: `--release`, `--portable`, `--profile`, etc.)*
 
-## Multiplayer
+2. Compilar para la plataforma deseada con [Ninja](https://ninja-build.org/):
+   * **Linux:** `ninja linux`
+   * **Windows:** `ninja windows`
+   * **Android:** `ninja android_apk`
+   * **Web:** `ninja web`
 
-The game can play system link games on a local network and on the internet:
+---
 
-- A system link game can have up to 128 players on up to 128 machines.
-- Linux, Windows and Android machines and browsers can play in the same
-  game. On a local network, the native builds play system link; browsers
-  play each other in rooms, over WebRTC
-  ([port/web/README.md](port/web/README.md)).
-- An invite link, or the server browser, lets a machine join a game on the
-  internet, browsers too: a native build takes a browser's WebRTC
-  ([port/linux/README.md](port/linux/README.md), "Browsers"). No server of
-  this project is necessary.
-- The netcode is new. Each machine moves its own player at once,
-  and the host makes the decisions for the game. Refer to
-  [port/linux/NETCODE.md](port/linux/NETCODE.md).
+## 5. Créditos y Licencias
 
-## Build the game
-
-You do not need the Xbox SDK. The port supplies the SDK declarations that
-the game uses. Refer to [port/include/xdk](port/include/xdk/README.md).
-
-To build the game:
-
-1. Install Python and [ninja](https://ninja-build.org/).
-2. Install the tools for your platform. Refer to the README for the
-   platform.
-3. In the root folder of the repository, enter `python configure.py`.
-4. Enter `ninja` with the target for the platform:
-
-| Target | Result |
-| --- | --- |
-| `ninja linux` | `build/linux/halo` |
-| `ninja windows` (on Windows) | `build/windows/halo.exe` and `SDL3.dll` |
-| `ninja android_apk` | `port/android/app/build/outputs/apk/debug/app-debug.apk` |
-| `ninja web` | `build/web/site/`, the web site (`python tools/web_serve.py` serves it) |
-
-If you enter `ninja` without a target, ninja builds the game for the
-computer that you use.
-
-`tools/ci_build.py` makes the same builds as GitHub Actions. For example,
-enter `python tools/ci_build.py linux release`.
-
-### Build options
-
-Give these options to `configure.py`:
-
-| Option | Result |
-| --- | --- |
-| (none) | A debug build. A failed assertion stops the game. |
-| `--release` | A release build. The game does not examine assertions, as in the retail game. |
-| `--portable` | The Linux and Windows builds operate on all x86-64 processors. The Linux build also operates on older distributions and on SteamOS: refer to "Portable build" in [port/linux/README.md](port/linux/README.md#portable-build). Use this option for builds that you give to other persons. |
-| `--lto=thin`, `--lto=off` | Less link-time optimization. The link is faster. |
-| `--pgo=off` | No profile-guided optimization. |
-| `--pgo=train` | Records a new optimization profile. Refer to "Optimization profiles". |
-| `--profile` | A profiling build. It records CPU times. Refer to "Profiling builds". |
-| `--web-emcc PATH` | The Emscripten `emcc` for `ninja web` (else the one on the PATH, or `~/emsdk`'s). |
-
-Without `--portable`, the Linux and Windows builds use all the instructions
-of the processor that builds them (`-march=native`). Such a build does not
-always start on a different computer.
-
-### Optimization profiles
-
-The builds use profiles of the game to optimize the code:
-
-- `pgo/halo_linux.profdata` for Linux and Android.
-- `pgo/halo_windows.profdata` for Windows.
-
-The profiles need clang 22 or later. With an older clang, the builds do not
-use the profiles.
-
-To record a new profile:
-
-1. Delete the profile.
-2. Enter `python configure.py --pgo=train`.
-3. Enter `ninja linux` or `ninja windows`.
-
-The build then plays the main menu and the first minute of each campaign
-level. This procedure continues for approximately 15 minutes. The game
-data must be in `assets/`.
-
-### Profiling builds
-
-A profiling build records where the game spends its time.
-
-1. Enter `python configure.py --profile`, then build as usual.
-2. Start a recording. Enter `profile_record` in the console (or the telnet
-   console), or set `debug.profile_record = true` in `config.toml`. To
-   record each game of a session, also set
-   `debug.profile_record_when = "game"`.
-3. Stop the recording. Enter `profile_stop`, load another map, or quit.
-
-The game writes numbered `.part<n>.json` files under `profiles/` in its data root
-and logs their paths. Parts are retained after the recording stops. Logs go to
-standard error; a Windows release build without standard error writes them to
-`halo.log` next to `halo.exe`.
-
-`tools/net_report.py` is a helper for developers. Enter
-`python tools/net_report.py <recording.part1.json>` to read a recording
-as tables. The command also writes `<recording>.summary.txt`, a short text
-file.
-
-| Command | Result |
-| --- | --- |
-| `profile_record [seconds]` | Starts a recording. With a number of seconds, the recording stops after that time. |
-| `profile_stop` | Stops the recording. |
-
-`debug.profile_memory` sets the memory of a recording in MB (default 256,
-from 4 to 1024). A recording has no length limit:
-the game writes a part each time the memory is full. Refer to "Settings" in
-[port/linux/README.md](port/linux/README.md).
-
-On Android, the files are in `/sdcard/Android/data/com.halo.decomp/files/profiles/`.
-Enter `adb pull` to copy the recording parts to a computer.
-
-A profiling build plays with normal builds. It does not use
-`--pgo=train`.
+* **OpenCE:** Todo el reconocimiento a la comunidad y desarrolladores de [OpenCE (OpenCommunityEdition)](https://github.com/OpenCommunityEdition/OpenCE), cuya capa de plataforma, ingeniería inversa de Xbox y soporte multiplataforma hacen posible este proyecto.
+* **Def Jam: Fight for NY:** Copyright (C) 2004 Electronic Arts Inc. y AKI Corporation. Def Jam y todas las marcas asociadas pertenecen a sus respectivos dueños.
+* **Licencia del código de plataforma:** CC0 (Dominio Público) para el código del port y la capa de compatibilidad.

@@ -1,0 +1,1253 @@
+<feflow>
+    <? This is the screens flow database ?>
+	<? transition types?>
+	<? kSwap=0 ?>
+	<? kPanUp=1 ?>
+	<? kPanDown=2 ?>
+	<? kDoorZoomIn=3 ?>
+
+	<screen>
+		<name>xHead</name>
+		<priority>1</priority>
+	</screen>
+	<screen>
+		<name>pageHead</name>
+		<priority>1</priority>
+	</screen>
+	<screen>
+		<name>trans/t1</name>
+		<priority>1</priority>
+	</screen>
+
+	<screen>
+		<name>trans/empty2</name>
+		<priority>1</priority>
+	</screen>
+	
+	<screen>
+		<name>trans/empty</name>
+		<priority>1</priority>
+	</screen>
+
+	<screen>
+		<name>intMain/message</name>
+		<priority>1</priority>
+	</screen>
+	
+	<screen>
+		<name>memoryCard/memory</name>
+		<priority>1</priority>
+	</screen>
+	
+
+	<? 0.intMain/preStart ?>
+	<screen>
+		<name>intMain/preStart</name>
+		<priority>20</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/t1</between>
+				<userdata>2514</userdata>
+				<type>2</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>
+
+	<? 1.intMain/mainMenu ?>
+	<screen>
+		<name>intMain/mainMenu</name> 
+		<priority>20</priority>
+		<transtionlist>
+			<count>9</count>
+			<transition>
+				<to>intMain/preStart</to>
+				<between>trans/t1</between>
+				<userdata>2514</userdata>
+				<type>1</type>
+				<class>0</class>
+			</transition>
+
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>3</type>
+				<class>0</class>
+			</transition>
+
+			<transition>
+				<to>options/userID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>3</type>
+				<class>0</class>
+			</transition>
+
+			<transition>
+				<to>hiScores/hiScores</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+
+			<transition>
+				<to>jukebox/beatbox</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+
+			<transition>
+				<to>battle/buyrewards</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>						
+			
+			<transition>
+				<to>options/credits</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>						
+			
+			<transition>
+				<to>extras/extras</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			
+			<transition>
+				<to>options/options</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>
+	
+	<? 2.battle/cmtype ?> 
+	<screen>
+		<name>battle/cmtype</name> 
+		<priority>100</priority>
+		<transtionlist>
+			<count>4</count>
+			<transition>
+				<to>options/battleID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chooseF2</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>options/userID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</trasitionlist>
+		<preloadlist>
+			<numload>1</numload>
+			<preload>battle/rules</preload>
+		</preloadlist>	
+	</screen>
+	
+	
+	<? 3.battle/chooseF2 ?>
+	<screen>
+		<name>battle/chooseF2</name> 
+		<priority>50</priority>
+		<transtionlist>
+			<count>4</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/oldMLoad</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>options/battleID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>		
+		</transitionlist>
+	</screen>
+	
+	<? 4.battle/chsVenue ?>
+	<screen>
+		<name>battle/chsVenue</name>	
+		<priority>100</priority>
+		<transtionlist>
+			<count>11</count>
+			<transition>
+				<to>battle/oldMLoad</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			
+			<transition>
+				<to>battle/chooseF2</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chooseF3</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chooseF4</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chsTeam4</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>		
+			<transition>
+				<to>story/barber</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>		
+			<transition>
+				<to>story/clothing</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>		
+			<transition>
+				<to>story/jeweller</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/tattoo</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/gym</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transitionlist>
+		
+		<preloadlist>
+			<numload>1</numload>
+			<preload>battle/map</preload>
+		</preloadlist>
+
+	</screen>
+	
+	
+	<? 5.battle/oldMLoad ?>
+	<screen>
+		<name>battle/oldMLoad</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+				<transition>
+				<to>trans/empty</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>			
+		</transtionlist>
+	</screen>
+
+
+	<? 6.story/charDec ?>
+	<screen>
+		<name>story/charDec</name>
+		<priority>100</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>story/sketch</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+	<? 7.story/sketch ?>
+	<screen>
+		<name>story/sketch</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>story/charDec</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+		
+	<? 8.story/storyID ?>
+	<screen>
+		<name>story/storyID</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>3</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/charDec</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+	
+	<? 9.story/crib ?>
+	<screen>
+		<name>story/crib</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>6</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/msgCentr</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>			
+			<transition>
+				<to>intMain/message</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/wardrobe</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>story/trophies</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>options/cribOptions</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+<? 10.story/barber ?>
+	<screen>
+		<name>story/barber</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+	<? 11.battle/matchSm1 ?>
+	<screen>
+		<name>battle/matchSm1</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/rewards1</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+
+	<? 12.battle/matchSm2 ?>
+	<screen>
+		<name>battle/matchSm2</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>battle/rewardun</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>	
+			<transition>
+				<to>story/chalsum</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+
+	<? 13.battle/matchSm3 ?>
+	<screen>
+		<name>battle/matchSm3</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>battle/rewardun</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>	
+			<transition>
+				<to>story/chalsum</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+	
+	<? 14.battle/matchSm4 ?>
+	<screen>
+		<name>battle/matchSm4</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>battle/rewardun</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>	
+			<transition>
+				<to>story/chalsum</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+
+
+	<? 15.battle/rematch ?>
+	<screen>
+		<name>battle/rematch</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/tips</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+	<? 16.story/chalsum ?>
+	<screen>
+		<name>story/chalsum</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>battle/rematch</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/rewards1</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+	<? 17.battle/rewardun ?>
+	<screen>
+		<name>battle/rewardun</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/rematch</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+	<? 18.battle/tips ?>
+	<screen>
+		<name>battle/tips</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+	<? 19.battle/chooseF3 ?>
+	<screen>
+		<name>battle/chooseF3</name>
+		<priority>20</priority>
+		<transtionlist>
+			<count>3</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>options/battleID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>			
+		</transtionlist>
+	</screen>	
+
+	<? 20.battle/chooseF4 ?>
+	<screen>
+		<name>battle/chooseF4</name>
+		<priority>10</priority>
+		<transtionlist>
+			<count>4</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>options/battleID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chsTeam4</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+
+	<? 21.story/gym ?>
+	<screen>
+		<name>story/gym</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+
+		</transtionlist>
+	</screen>	
+	
+	
+	<? 22.story/msgCentr ?>
+	<screen>
+		<name>story/msgCentr</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>			
+		</transtionlist>
+	</screen>		
+	
+
+	<? 23.story/wardrobe ?>
+	<screen>
+		<name>story/wardrobe</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+	
+	
+	<? 24.intMain/message ?>
+	<screen>
+		<name>intMain/message</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+		
+	
+	<? 25.options/userID ?>
+	<screen>
+		<name>options/userID</name>
+		<priority>90</priority>
+		<transtionlist>
+			<count>3</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>		
+			<transition>
+				<to>options/options</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+
+	<? 26.options/battleID ?>
+	<screen>
+		<name>options/battleID</name>
+		<priority>100</priority>
+		<transtionlist>
+			<count>4</count>
+			<transition>
+				<to>battle/chooseF2</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chooseF3</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+			<transition>
+				<to>battle/chooseF4</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/cmtype</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+	
+	
+	<? 27.story/trophies ?>
+	<screen>
+		<name>story/trophies</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>	
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>		
+		</transtionlist>
+	</screen>	
+
+
+	<? 28.story/clothing ?>
+	<screen>
+		<name>story/clothing</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+	<? 29.story/jeweller ?>
+	<screen>
+		<name>story/jeweller</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+
+	<? 30.story/tattoo ?>
+	<screen>
+		<name>story/tattoo</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+	
+	<? 31.hiScores/hiScores ?>
+	<screen>
+		<name>hiScores/hiScores</name>
+		<priority>50</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+	
+	<? 32.options/options ?>
+	<screen>
+		<name>options/options</name>
+		<priority>70</priority>
+		<transtionlist>
+			<count>3</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>options/userID</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/buyrewards</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>		
+		</transtionlist>
+	</screen>		
+	
+	<? 33.jukebox/beatbox ?>
+	<screen>
+		<name>jukebox/beatbox</name>
+		<priority>60</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			
+		</transtionlist>
+	</screen>	
+	
+<? 34.battle/buyrewards ?>
+	<screen>
+		<name>battle/buyrewards</name>
+		<priority>80</priority>
+		<transtionlist>
+			<count>3</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/unlockchar</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/unlockven</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+		
+	</screen>
+	
+	
+<? 35.battle/unlockchar ?>
+	<screen>
+		<name>battle/unlockchar</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/buyrewards</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>	
+		
+		<preloadlist>
+			<numload>1</numload>
+			<preload>thumbs/thumball</preload>
+		</preloadlist>				
+	</screen>	
+	
+	
+<? 36.battle/unlockven ?>
+	<screen>
+		<name>battle/unlockven</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>battle/buyrewards</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+		
+		<preloadlist>
+			<numload>1</numload>
+			<preload>venuthumbs/thumbvenueall</preload>
+			<preload>venuthumbs/venueselected</preload>
+		</preloadlist>					
+	</screen>	
+	
+<? 37.options/screenPosition ?>
+	<screen>
+		<name>options/screenPosition</name>
+		<priority>30</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>options/options</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>			
+	</screen>		
+
+<? 38.options/screenBright ?>
+	<screen>
+		<name>options/screenBright</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>options/options</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+
+
+<? 39.intMain/bootLoad ?>
+	<screen>
+		<name>intMain/bootLoad</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>intMain/preStart</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>intMain/legal1</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+<? 40.battle/chsTeam4 ?>
+	<screen>
+		<name>battle/chsTeam4</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+			<transition>
+				<to>battle/chooseF4</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+		
+
+<? 41.extras/extras ?>
+	<screen>
+		<name>extras/extras</name>
+		<priority>50</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+	
+<? 42.story/summary ?>
+	<screen>
+		<name>story/summary</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+<? 43.battle/rewards1 ?>
+	<screen>
+		<name>battle/rewards1</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+	
+<? 44.intMain/legal1 ?>
+	<screen>
+		<name>intMain/legal1</name>
+		<priority>1</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/bootLoad</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+
+<? 45.options/credits ?>
+	<screen>
+		<name>options/credits</name>
+		<priority>20</priority>
+		<transtionlist>
+			<count>1</count>
+			<transition>
+				<to>intMain/mainMenu</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>0</class>
+			</transition>
+		</transtionlist>
+	</screen>	
+	
+<? 46.options/cribOptions ?>
+	<screen>
+		<name>options/cribOptions</name>
+		<priority>20</priority>
+		<transtionlist>
+			<count>2</count>
+			<transition>
+				<to>story/crib</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+			<transition>
+				<to>battle/chsVenue</to>
+				<between>trans/empty</between>
+				<userdata>0</userdata>
+				<type>0</type>
+				<class>1</class>
+			</transition>
+		</transtionlist>
+	</screen>		
+
+</feflow>
+

@@ -30,3 +30,19 @@ original/
 
 # CI build outputs (tools/ci_build.py)
 dist/
+
+# Disc images, proprietary binaries and dumps (never commit)
+*.bin
+*.cue
+*.iso
+*.xiso
+*.xbe
+*.viv
+*.mad
+*.dat
+Def Jam - Fight for NY/*.bin
+Def Jam - Fight for NY/*.cue
+Def Jam - Fight for NY/*.jpeg
+Def Jam - Fight for NY/extracted/*.xbe
+Def Jam - Fight for NY/extracted/**/*.viv
+Def Jam - Fight for NY/extracted/**/*.mad

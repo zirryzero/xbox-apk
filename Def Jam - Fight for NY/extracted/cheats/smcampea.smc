@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<Recording>
+  <Destination>
+    <Name>Tutorial_Story_House</Name>
+    <Type>3264795794</Type>
+    <TypeName>SDT_MATCH</TypeName>
+    <Link>352321560</Link>
+    <HeroWon>True</HeroWon>
+    <WinnerName>Hero</WinnerName>
+    <WinnerLink>201326592</WinnerLink>
+    <WinnerType>1671139703</WinnerType>
+    <LoserName>House</LoserName>
+    <LoserLink>117440568</LoserLink>
+    <LoserType>1290121650</LoserType>
+    <WinnerHealth>100</WinnerHealth>
+    <LoserHealth>100</LoserHealth>
+  </Destination>
+  <Destination>
+    <Name>SC02_Welcome</Name>
+    <Type>4091453938</Type>
+    <TypeName>SDT_SE</TypeName>
+    <Link>452984860</Link>
+  </Destination>
+</Recording>

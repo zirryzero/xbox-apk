@@ -1,0 +1,123 @@
+; Settings file for audio
+; Only floating point values supported at this time
+; The '#' symbol precedes the variable name
+
+#Music_Vol 60
+
+#Master_Vol				30000
+
+#FESFX_Vol				25000
+
+#Ambience_Vol			30000
+#AmbienceRAM_Vol		30000
+#AmbienceRandom_Vol		30000
+#BlazingFreeze_Vol		30000
+#BlazinSFX_Vol			32500
+#BodyAux_Vol			30000
+#BodyCollide_Vol		29100
+#BodyContacts_Vol		26418
+#BoneCrunch_Vol			16000
+#BurnYell_Vol			30000
+#CrowdAngry_Vol			19000
+#CrowdBoo_Vol			19000
+#CrowdCheer_Vol			19000
+#CrowdOoh_Vol			19000
+#CrowdRAM_Vol			17000
+#CrowdRandomReaction_Vol 24000
+#CrowdStream_Vol		15500
+#CrowdWet_Level         32767
+#CrowdDry_Level         32767
+#EnvAttack_Vol			32767
+#FaceHit_Vol			16242
+#FallCardboard_Vol		25435
+#FallConcrete_Vol		20000
+#FallDirt_Vol			16500
+#FallGlobal_Vol			16500
+#FallMat_Vol			32000
+#FallWood_Vol			32500
+#FeetConcrete_Vol		12000
+#FeetCardboard_Vol		12000
+#FeetDirt_Vol			10000
+#FeetGlobal_Vol			10000
+#FeetMat_Vol			10000
+#FeetMetal_Vol			25000
+#FeetWood_Vol			16000
+#FemaleGrunt_Vol		14000
+#FoleyFX_Vol			2657
+#Grapple_Vol			27672
+#Grunts_Vol				13142
+#HandSlap_Vol			16000
+#HeadSmack_Vol			30000
+#HitBlock_Vol			32767
+#Kick_Vol				32767
+#LocationSFX_Vol		15000
+#MatFall_Vol			32000
+#MatSuperFall_Vol		17000
+#Moment_Vol				28000
+#Omni_Vol				32767
+#PointsMove_Vol			25000
+#Punch_Vol				32767
+#Reverb_Level_Low        		50
+#Reverb_Level_Medium           		60
+#Reverb_Level_High	       		70
+#SFX_Submix1			32000
+#SFX_Submix2			32000
+#SFX_Submix3			23000
+#SFX_Submix4			8000
+#SFX_Submix5			16000
+#SFX_SubmixGlobal		16000
+#Shop_Vol				7000
+#Special_Vol			25000
+#SurfaceHit_Vol         32767
+#Weapon_Vol				32767
+#Whoosh_Vol				15100
+#WoodDebris_Vol			14000
+#Train_Vol				32767
+#Cinema_Vol			32767
+#Cinema_Speech_Vol 		32767
+
+#FE_Music_Vol			50
+#Speech_Announcer		90
+#Speech_LoudMouth		89
+#Speech_Character		70
+#Speech_Heckle			33
+#Speech_Taunt			75
+#Speech_Intro_Extro		100
+#Speech_Tutorial		85
+#Speech_Scream			100
+
+#Speech_Barber			100
+#Speech_Clothing		100
+#Speech_Jeweler			100
+#Speech_Sketch			100
+#speech_Tattoo			100
+#Speech_Gym			100
+
+#Ann_Boredom			12.5
+
+#CrowdScaleRate			2200
+
+#CrowdAI_IntensityIncMul 6.4
+#CrowdAI_IntensityDrop	25
+#CrowdAI_IntensityLowest 14
+
+#CrowdAI_AngerInc		11.1
+#CrowdAI_AngerDropMul	10.0
+#Music_ScaleMul			120.0
+
+#CrowdReactLow          1300
+#CrowdReactMedium       1700
+#CrowdReactHigh         2700
+
+#AEMS_Azimuth_Fudge	 	2.0
+
+#SFX_Ducker			0
+#Crowd_Ducker 			65
+#Crowd_Ducker_2 		50
+#Ambient_Ducker			50
+
+#Heckle_Interval		20.0
+#Heckle_Time_Variation		5.0
+#Heckle_Time_Delay		00.0
+
+#Music_Fade_Time		30.0
