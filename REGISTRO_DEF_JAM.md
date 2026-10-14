@@ -211,7 +211,32 @@ Se completó la ingeniería inversa del sistema de empaquetado y texturas de la 
 
 ---
 
-## 6. Estado Actual y Próximos Pasos
+## 6. Arquitectura e Implementación del Cargador Nativo en C
+
+Se diseñó e implementó el cargador nativo en C que permite ejecutar el código original x86 de Xbox directamente sobre sistemas modernos de 32 bits, interconectándolo con la capa de abstracción de OpenCE:
+
+### 6.1. Módulos Creados
+* [`port/linux/game/djv2_runner.h`](port/linux/game/djv2_runner.h): Definición de estructuras de control del ejecutable, información de secciones y prototipos del cargador.
+* [`port/linux/game/djv2_runner.c`](port/linux/game/djv2_runner.c): Implementación del mapeador de memoria física y el despachador de llamadas del kernel de Xbox.
+* [`port/linux/game/djv2_main.c`](port/linux/game/djv2_main.c): Punto de entrada principal (`main`) para la ejecución nativa de OpenFFNY.
+
+### 6.2. Estrategia de Carga y Enlace en Memoria
+1. **Reserva de Memoria en Base Idéntica (`0x00010000`):**
+   * En sistemas de 32 bits (x86), el espacio de direcciones virtuales permite asignar directamente en `0x00010000` mediante `VirtualAlloc` (Windows) o `mmap(..., MAP_FIXED)` (Linux/POSIX).
+   * Al estar en su dirección base original, **todos los punteros absolutos del código original siguen siendo 100% válidos** sin necesidad de relocalizaciones en caliente.
+2. **Carga Directa de las 12 Secciones:**
+   * `.text` (2.0 MB) se sitúa en `0x00011000`.
+   * `.rdata` (329 KB) se sitúa en `0x002859A0`.
+   * `.data` (154 KB + BSS) se sitúa en `0x002D5FC0`.
+   * Las librerías de Xbox (`D3D`, `DSOUND`, `XPP`, etc.) se mapean en sus regiones reservadas.
+3. **Conexionado de la Tabla de Thunks del Kernel (`0x002859A0`):**
+   * Se hace escribible la tabla en `0x002859A0` y se rellenan sus entradas con punteros a las funciones en C de OpenCE (`RtlInitializeCriticalSection`, `KeWaitForSingleObject`, `MmAllocateContiguousMemory`, `DbgPrint`, etc.).
+4. **Lanzamiento de `main()` (`0x00011500`):**
+   * Con la memoria y las llamadas enlazadas, el runner transfiere el control a `0x00011500` ejecutando `InitPhase1`, `InitPhase2` y el bucle de juego.
+
+---
+
+## 7. Estado Actual y Próximos Pasos
 
 * [x] Identificación y verificación del formato de disco de origen (`.bin` XDVDFS).
 * [x] Extracción y análisis estructural del ejecutable `default.xbe`.
@@ -225,6 +250,8 @@ Se completó la ingeniería inversa del sistema de empaquetado y texturas de la 
 * [x] Implementación del extractor de paquetes BIG/VIV ([`tools/unpack_viv.py`](tools/unpack_viv.py)).
 * [x] Identificación y descompresión del formato RefPack (`10FB`).
 * [x] Decodificación completa de texturas `SHPX` y Morton unswizzling ([`tools/parse_shpx.py`](tools/parse_shpx.py)).
-* [ ] **Paso siguiente (Opción 1):** Implementar el Cargador y Ejecutable Nativo en C (`djv2_main.c`) que inicialice SDL3/OpenGL y despache las llamadas a `CRenderSubsystem` y el bucle de juego.
-* [ ] **Paso siguiente:** Mapear las llamadas de `D3D8` hacia la capa Direct3D 8 de OpenCE ([`port/linux/src/d3d8_gl.c`](port/linux/src/d3d8_gl.c)).
+* [x] Implementación del Cargador y Ejecutable Nativo en C ([`port/linux/game/djv2_runner.c`](port/linux/game/djv2_runner.c), [`djv2_main.c`](port/linux/game/djv2_main.c)).
+* [ ] **Paso siguiente:** Mapear el dispositivo Direct3D 8 de `CRenderSubsystem` hacia la capa OpenGL de OpenCE ([`port/linux/src/d3d8_gl.c`](port/linux/src/d3d8_gl.c)) para abrir la ventana con SDL3.
+* [ ] **Paso siguiente:** Integrar la compilación del binario OpenFFNY en `tools/windows_build.py` y `tools/linux_build.py`.
+
 
