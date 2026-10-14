@@ -137,7 +137,68 @@ Se resolvieron con éxito el 100% (160/160) de los ordinales importados por el e
 
 ---
 
-## 4. Estado Actual y Próximos Pasos
+## 4. Ingeniería Inversa del Ciclo de Vida del Ejecutable
+
+A través del desensamblado del bloque `.text` con Capstone, se descifró el flujo completo de arranque y ejecución del juego:
+
+### 4.1. Cadena de Inicialización
+```mermaid
+flowchart TD
+    A["Entry Point (0x001F6B67)"] --> B["Configura TLS y Pila"]
+    B --> C["Crea Hilo Principal (0x001F6AF3)"]
+    C --> D["Inicializa CRT de MSVC"]
+    D --> E["Llama a main() del Juego (0x00011500)"]
+    E --> F["InitPhase1 (0x00011E40): Registro de Subsistemas"]
+    E --> G["InitPhase2 (0x00011CD0): Grafo de Tareas"]
+    E --> H["MainGameLoop (0x00011060): Bucle de Juego y Render"]
+```
+
+* **Entry Point (`0x001F6B67`):**
+  Punto de entrada de arranque de Xbox. Configura el puntero TLS (`Thread Local Storage`) y llama a `PsCreateSystemThreadEx` para lanzar el hilo principal de juego apuntando a `0x001F6AF3`.
+* **Lanzador del Hilo Principal (`0x001F6AF3`):**
+  Inicializa las estructuras del CRT de Microsoft y realiza la llamada a la función raíz del juego:
+  ```x86
+  0x001F6B49: push 0
+  0x001F6B4B: push 0
+  0x001F6B4D: push 0
+  0x001F6B4F: call 0x00011500    ; main(int argc, char **argv, char **envp)
+  ```
+* **Función Principal del Juego `main()` (`0x00011500`):**
+  Es una función extremadamente limpia y compacta de sólo 3 llamadas esenciales:
+  ```x86
+  0x00011500: call 0x00011E40    ; InitPhase1: Instanciación de subsistemas
+  0x00011505: call 0x00011CD0    ; InitPhase2: Configuración de tareas
+  0x0001150A: call 0x00011060    ; MainGameLoop: Bucle activo del juego
+  0x0001150F: xor  eax, eax
+  0x00011511: ret
+  ```
+* **`InitPhase1` (`0x00011E40`):**
+  Registra los subsistemas centrales en el gestor global de la aplicación (`0x002FBBE8`):
+  * Instancia `CRenderSubsystem` (pasando la cadena `"Render Subsystem"` ubicada en `0x002865DC`) con tamaño de 172 bytes (`0xAC`).
+  * Instancia `CREALSubsystem`, `CFontSubsystem`, `CSpriteSubsystem` y el subsistema de sonido.
+* **`MainGameLoop` (`0x00011060`):**
+  Itera sobre la cola de tareas activas (`0x002FBAC0`, `0x002FBAC4`, `0x002FBAC8`, etc.) ejecutando actualización de lógica, procesamiento de físicas y despacho de comandos de renderizado a Direct3D 8.
+
+---
+
+## 5. Pipeline de Recursos y Formatos de Datos
+
+Se realizó ingeniería inversa a los formatos de contenedores y empaquetado de assets de EA Games:
+
+### 5.1. Formato de Contenedores BIG/VIV (`BIGF`)
+Los archivos `.viv` del juego utilizan el formato estándar `BIGF` (Electronic Arts BIG archive):
+* Cabecera big-endian de 16 bytes: `BIGF`, tamaño total del archivo, número de archivos embebidos y tamaño del directorio.
+* Directorio: array de entradas con `offset` (4 bytes big-endian), `size` (4 bytes big-endian) y nombre del archivo terminado en nulo (`\0`).
+* **Herramienta implementada:** [`tools/unpack_viv.py`](tools/unpack_viv.py), capaz de inspeccionar y extraer cualquier paquete `.viv` al instante.
+* **Tipografías extraídas (`fonts/fonts.viv`):** Contiene 10 fuentes TrueType estándar (`.ttf`), tales como `AachenStd-Bold.ttf`, `TradeGothicBold_Outline.ttf`, `EA05_Body.ttf`, etc.
+
+### 5.2. Formato de Mallas y Texturas (`.xsh` / `SHPX`)
+Dentro de los paquetes de modelos de luchadores (`assets/v2cm.viv`, `assets/v2cp_*.viv`):
+* Los archivos individuales tienen extensión `.xsh` e inician con la firma mágica **`SHPX`** (*Shape Xbox*, el formato de mallas, texturas y geometrías 3D de EA para la GPU NV2A de Xbox).
+
+---
+
+## 6. Estado Actual y Próximos Pasos
 
 * [x] Identificación y verificación del formato de disco de origen (`.bin` XDVDFS).
 * [x] Extracción y análisis estructural del ejecutable `default.xbe`.
@@ -145,8 +206,10 @@ Se resolvieron con éxito el 100% (160/160) de los ordinales importados por el e
 * [x] Descifrado de claves de cabecera y resolución del punto de entrada (`0x001F6B67`).
 * [x] Mapeo de secciones y separación del código de juego respecto al SDK de Xbox.
 * [x] Identificación y resolución al 100% de las 160 llamadas del Kernel de Xbox.
-* [x] Creación y actualización del documento de registro histórico.
-* [ ] **Paso siguiente:** Analizar las funciones de `D3D8` llamadas desde la sección `.text` para verificar cobertura contra [`d3d8_gl.c`](file:///c:/Users/harol/OneDrive/Documents/Code/xbox-apk/OpenCE/port/linux/src/d3d8_gl.c).
-* [ ] **Paso siguiente:** Examinar las llamadas a `DSOUND` y `XPP` para asegurar compatibilidad con SDL3 en [`dsound_sdl.c`](file:///c:/Users/harol/OneDrive/Documents/Code/xbox-apk/OpenCE/port/linux/src/dsound_sdl.c) y [`xinput_sdl.c`](file:///c:/Users/harol/OneDrive/Documents/Code/xbox-apk/OpenCE/port/linux/src/xinput_sdl.c).
-* [ ] **Paso siguiente:** Diseñar el pipeline de recompilación estática / descompilación para el bloque `.text` (2.0 MB de código x86).
-
+* [x] Creación del script extractor de discos XISO ([`tools/extract_defjam.py`](tools/extract_defjam.py)).
+* [x] Creación del inspector de XBE ([`tools/parse_xbe.py`](tools/parse_xbe.py)).
+* [x] Desensamblado y resolución del flujo de `main()` y el bucle de juego (`0x00011500`).
+* [x] Implementación del extractor de paquetes BIG/VIV ([`tools/unpack_viv.py`](tools/unpack_viv.py)).
+* [x] Identificación del formato de modelos 3D y texturas (`SHPX` / `.xsh`).
+* [ ] **Paso siguiente:** Crear un parser para el formato `SHPX` para extraer texturas (DXT/swizzled) y mallas 3D hacia formatos modernos utilizables por OpenGL.
+* [ ] **Paso siguiente:** Mapear las llamadas de `CRenderSubsystem` hacia la capa Direct3D 8 de OpenCE ([`port/linux/src/d3d8_gl.c`](port/linux/src/d3d8_gl.c)).

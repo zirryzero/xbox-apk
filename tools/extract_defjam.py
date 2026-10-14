@@ -95,3 +95,4 @@ if __name__ == "__main__":
         img = sys.argv[1]
         out = sys.argv[2] if len(sys.argv) > 2 else os.path.join("Def Jam - Fight for NY", "extracted")
         extract_image(img, out)
+

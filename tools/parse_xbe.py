@@ -88,3 +88,4 @@ def inspect_xbe(path):
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else os.path.join("Def Jam - Fight for NY", "extracted", "default.xbe")
     inspect_xbe(target)
+
