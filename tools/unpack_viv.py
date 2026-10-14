@@ -75,3 +75,4 @@ if __name__ == "__main__":
     viv = sys.argv[1]
     out = sys.argv[2] if len(sys.argv) > 2 else None
     unpack_viv_file(viv, out)
+

@@ -46,3 +46,5 @@ Def Jam - Fight for NY/*.jpeg
 Def Jam - Fight for NY/extracted/*.xbe
 Def Jam - Fight for NY/extracted/**/*.viv
 Def Jam - Fight for NY/extracted/**/*.mad
+Def Jam - Fight for NY/extracted/test_textures/
+*.bmp

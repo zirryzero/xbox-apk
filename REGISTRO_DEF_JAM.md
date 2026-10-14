@@ -196,6 +196,19 @@ Los archivos `.viv` del juego utilizan el formato estándar `BIGF` (Electronic A
 Dentro de los paquetes de modelos de luchadores (`assets/v2cm.viv`, `assets/v2cp_*.viv`):
 * Los archivos individuales tienen extensión `.xsh` e inician con la firma mágica **`SHPX`** (*Shape Xbox*, el formato de mallas, texturas y geometrías 3D de EA para la GPU NV2A de Xbox).
 
+### 5.3. Decodificación y Extracción de Texturas NV2A (`tools/parse_shpx.py`)
+Se completó la ingeniería inversa del sistema de empaquetado y texturas de la GPU de Xbox:
+1. **Compresión EA RefPack (`0x10FB` / QFS):**
+   Todos los archivos `.xsh` están comprimidos con el algoritmo propietario RefPack de Electronic Arts. El descompresor detecta la cabecera `10 FB` y expande los datos en memoria al tamaño original exacto (ej. `C2D_G1.xsh` de 61 KB se descomprime a 200,112 bytes).
+2. **Estructura Interna del SHPX:**
+   * Cabecera de 16 bytes: `SHPX`, tamaño total descomprimido, número de registros y Tag del Shape (ej. `G357`, `G359`).
+   * Directorio de texturas: lista de etiquetas de 4 bytes (ej. `ta01` a `ta60` para tatuajes/miniaturas, `cm_f` para rostros) con sus desplazamientos en el archivo.
+3. **Desentrelazado de Texturas Xbox (Morton Z-Order Unswizzling):**
+   La GPU NV2A de Xbox almacena los píxeles entrelazados en curva de Morton (Z-order) para optimizar la caché de la GPU. Se implementó el algoritmo de desentrelazado (`unswizzle_coords`) para restaurar la cuadrícula lineal de píxeles correcta.
+4. **Mapeo de Color y Paleta de 256 Colores (BGRA 32-bit):**
+   Cada textura de 8-bpp incluye un bloque de paleta con cabecera `0x2A 0x10` y 1024 bytes de colores en formato `[B, G, R, A]`, terminando con la firma histórica `"Buy ERTS"`. Al aplicar el orden de canales correcto, se obtuvo el tono de piel humano 100% real de los luchadores y las miniaturas de selección de personajes.
+5. **Herramienta creada:** [`tools/parse_shpx.py`](tools/parse_shpx.py), capaz de procesar cualquier `.xsh` comprimido y exportar sus texturas a imágenes BMP/PNG estándar sin pérdida.
+
 ---
 
 ## 6. Estado Actual y Próximos Pasos
@@ -210,6 +223,8 @@ Dentro de los paquetes de modelos de luchadores (`assets/v2cm.viv`, `assets/v2cp
 * [x] Creación del inspector de XBE ([`tools/parse_xbe.py`](tools/parse_xbe.py)).
 * [x] Desensamblado y resolución del flujo de `main()` y el bucle de juego (`0x00011500`).
 * [x] Implementación del extractor de paquetes BIG/VIV ([`tools/unpack_viv.py`](tools/unpack_viv.py)).
-* [x] Identificación del formato de modelos 3D y texturas (`SHPX` / `.xsh`).
-* [ ] **Paso siguiente:** Crear un parser para el formato `SHPX` para extraer texturas (DXT/swizzled) y mallas 3D hacia formatos modernos utilizables por OpenGL.
-* [ ] **Paso siguiente:** Mapear las llamadas de `CRenderSubsystem` hacia la capa Direct3D 8 de OpenCE ([`port/linux/src/d3d8_gl.c`](port/linux/src/d3d8_gl.c)).
+* [x] Identificación y descompresión del formato RefPack (`10FB`).
+* [x] Decodificación completa de texturas `SHPX` y Morton unswizzling ([`tools/parse_shpx.py`](tools/parse_shpx.py)).
+* [ ] **Paso siguiente (Opción 1):** Implementar el Cargador y Ejecutable Nativo en C (`djv2_main.c`) que inicialice SDL3/OpenGL y despache las llamadas a `CRenderSubsystem` y el bucle de juego.
+* [ ] **Paso siguiente:** Mapear las llamadas de `D3D8` hacia la capa Direct3D 8 de OpenCE ([`port/linux/src/d3d8_gl.c`](port/linux/src/d3d8_gl.c)).
+
